@@ -1,0 +1,31 @@
+<html>
+  <body>
+    <p id='server-time'></p>
+    <script>
+      var HOST = 'wss://stream.binance.com:9443/ws/btcusdt@depth'
+      console.log(HOST)
+      var wss = new WebSocket(HOST);
+      var el = document.getElementById('server-time');
+
+      wss.onmessage = (event) => {
+        data = JSON.parse(event.data)
+        if (!!data.b[0][0]) {
+          process.stdout.write('BNB/BTC: ' + toFloatTwo(data.b[0][0]));
+        }
+      };
+
+      function toFloatTwo(x){
+        return Number.parseFloat(x).toFixed(2)
+      }
+
+      function doSend() {
+        let message = 'WebSocket rocks'
+        console.log("SENT: " + message);
+        wss.send(message);
+      }
+
+    </script>
+
+    <button onClick=doSend()>Send</button>
+  </body>
+</html>
